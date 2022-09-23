@@ -9,11 +9,6 @@ public class Gun : MonoBehaviour
 
     [SerializeField] private float _xySpeed = 18;
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         float h = Input.GetAxis("Horizontal");
@@ -48,13 +43,19 @@ public class Gun : MonoBehaviour
         if (Physics.Raycast(_gunPos.transform.position, _gunPos.transform.TransformDirection(Vector3.forward), out hit, 100f))
         {
             Debug.Log(hit.transform.name);
+
+            Enemy enemy = hit.transform.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.TakeDamage();
+            }
         }
     }
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Vector3 direction = transform.TransformDirection(Vector3.forward) * 100f;
+        Vector3 direction = _gunPos.TransformDirection(Vector3.forward) * 100f;
         Gizmos.DrawRay(_gunPos.transform.position, direction);
     }
 }
