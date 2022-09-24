@@ -432,6 +432,7 @@ MonoBehaviour:
   - {fileID: 698208162}
   - {fileID: 381657261}
   - {fileID: 1275465100}
+  _roundText: {fileID: 1562794571}
 --- !u!1 &404682495
 GameObject:
   m_ObjectHideFlags: 0
@@ -2669,7 +2670,7 @@ GameObject:
   - component: {fileID: 1562794572}
   - component: {fileID: 1562794571}
   m_Layer: 5
-  m_Name: Ammo (1)
+  m_Name: Round
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3135,6 +3136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   score: 0
   index: 0
+  round: 1
 --- !u!1 &1962988101
 GameObject:
   m_ObjectHideFlags: 0

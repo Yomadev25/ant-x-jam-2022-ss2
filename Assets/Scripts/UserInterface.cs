@@ -12,6 +12,7 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private TMP_Text _ammoText;
     [SerializeField] private TMP_Text _scoreText;
     [SerializeField] private Image[] _enemyCount;
+    [SerializeField] private TMP_Text _roundText;
 
     Gun gun;
 
@@ -43,6 +44,17 @@ public class UserInterface : MonoBehaviour
         }
 
         _enemyCount[GameManager.instance.index].transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+    }
+
+    public void OnNextRound()
+    {
+        _roundText.text = "Round " + GameManager.instance.round;
+
+        for (int i = 0; i < _enemyCount.Length; i++)
+        {
+            _enemyCount[i].transform.localScale = Vector3.one;
+            _enemyCount[i].color = Color.red;
+        }
     }
 
     public void OnShoot()

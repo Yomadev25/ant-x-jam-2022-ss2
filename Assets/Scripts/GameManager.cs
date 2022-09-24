@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
     public event Action onRoundStart, onNextWave, onRoundEnd, onNextRound, onGameover;
     public float score;
 
-    int count = 10;
+    int totalCount = 10;
+    int targetCount = 5;
+    int count = 0;
     [HideInInspector] public int index = 0;
+    [HideInInspector] public int round = 1;
 
     Gun gun;
 
@@ -33,6 +36,7 @@ public class GameManager : MonoBehaviour
     public void GetScore(float _score)
     {
         score += _score;
+        count++;
         UserInterface.instance.OnScore();
     }
 
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour
     {
         index++;
 
-        if (index >= count)
+        if (index >= totalCount)
         {
             RoundEnd();
         }
@@ -62,23 +66,34 @@ public class GameManager : MonoBehaviour
         gun.isHit = false;
         UserInterface.instance.OnShoot();
         UserInterface.instance.OnNextWave();
-        onNextWave?.Invoke();
-        Debug.Log("Spawn");       
+        onNextWave?.Invoke();   
     }
 
     public void RoundEnd()
     {
-        Debug.Log("ROUND IS OVER");
+        if (count >= targetCount)
+        {
+            NextRound();
+        }
+        else
+        {
+            Gameover();
+        }
     }
 
     public void NextRound()
     {
+        index = 0;
+        count = 0;
+        round++;
+        UserInterface.instance.OnNextRound();
 
+        RoundStart();
     }
 
     public void Gameover()
     {
-
+        Debug.Log("GAME OVER");
     }
     #endregion
 }
