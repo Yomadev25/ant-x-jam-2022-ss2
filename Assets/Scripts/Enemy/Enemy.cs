@@ -6,7 +6,6 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private int _count;
-    [SerializeField] private float _cooldown;
     [SerializeField] private List<Vector3> waypoint = new List<Vector3>();
 
     [Header("FLY AREA")]
@@ -15,8 +14,13 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _minY;
     [SerializeField] private float _maxY;
 
+    Dog _dog;
+    bool isDie;
+
     IEnumerator Start()
     {
+        _dog = FindObjectOfType<Dog>();
+
         for (int i = 0; i < _count; i++)
         {
             waypoint.Add(new Vector3(Random.Range(_minX, _maxX), Random.Range(_minY, _maxY), 0f));
@@ -30,8 +34,6 @@ public class Enemy : MonoBehaviour
 
             if (Vector3.Magnitude(this.transform.position - waypoint[x]) <= 0)
             {
-                yield return new WaitForSeconds(_cooldown);
-
                 if (x < _count - 1) x++;
                 else break;
             }
@@ -46,7 +48,7 @@ public class Enemy : MonoBehaviour
 
             if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
             {
-                FindObjectOfType<Spawner>().Spawn();
+                _dog.DogTrigger(false, this.transform.GetChild(0).gameObject, 0f);
                 Destroy(this.gameObject);
             }
             yield return null;
@@ -55,7 +57,28 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage()
     {
-        FindObjectOfType<Spawner>().Spawn();
-        Destroy(this.gameObject);       
+        if (isDie) return;
+        StopAllCoroutines();
+        StartCoroutine(Die());
+    }
+
+    IEnumerator Die()
+    {
+        transform.eulerAngles = Vector3.zero;
+        yield return new WaitForSeconds(0.5f);
+
+        Vector3 endPoint = new Vector3(this.transform.position.x, 0f, 0f);
+        while (true)
+        {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, endPoint, 7f * Time.deltaTime);
+            this.transform.LookAt(endPoint);
+
+            if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
+            {
+                _dog.DogTrigger(true, this.transform.GetChild(0).gameObject, this.transform.position.x);
+                Destroy(this.gameObject);
+            }
+            yield return null;
+        }
     }
 }

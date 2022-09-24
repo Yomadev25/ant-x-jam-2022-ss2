@@ -51,7 +51,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: KayKit Animated Character|Idle
+  m_Name: Wave
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -64,7 +64,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -3132563606269690235, guid: 084e61c30c6ba7146b2414c5818fb2ad, type: 3}
+  m_Motion: {fileID: 5358457859207210129, guid: 84014414b58c51347b2603a78841a083, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
