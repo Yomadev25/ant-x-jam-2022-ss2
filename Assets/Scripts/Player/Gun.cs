@@ -8,6 +8,9 @@ public class Gun : MonoBehaviour
     [SerializeField] private Transform _gunMesh;
 
     [SerializeField] private float _xySpeed = 18;
+    public int ammo;
+
+    [HideInInspector] public bool isHit;
 
     void Update()
     {
@@ -18,7 +21,7 @@ public class Gun : MonoBehaviour
         ClampPosition();
         _gunMesh.LookAt(this.transform.position);
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && ammo > 0 && !isHit)
         {
             Shoot();
         }
@@ -47,9 +50,23 @@ public class Gun : MonoBehaviour
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
+                StartCoroutine(ShootEffect(true));
+                isHit = true;
                 enemy.TakeDamage();
             }
+            else
+            {
+                StartCoroutine(ShootEffect(false));
+            }
+           
         }
+        ammo--;
+        UserInterface.instance.OnShoot();
+    }
+
+    IEnumerator ShootEffect(bool isTrigger)
+    {
+        yield return null;
     }
 
     private void OnDrawGizmosSelected()

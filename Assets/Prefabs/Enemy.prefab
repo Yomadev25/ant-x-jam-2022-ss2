@@ -141,6 +141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _count: 3
+  _score: 500
   waypoint: []
   _minX: -4
   _maxX: 4

@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private int _count;
+    [SerializeField] private float _score;
     [SerializeField] private List<Vector3> waypoint = new List<Vector3>();
 
     [Header("FLY AREA")]
@@ -64,6 +65,8 @@ public class Enemy : MonoBehaviour
 
     IEnumerator Die()
     {
+        GameManager.instance.GetScore(_score);
+
         transform.eulerAngles = Vector3.zero;
         yield return new WaitForSeconds(0.5f);
 

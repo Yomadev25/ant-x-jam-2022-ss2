@@ -38,6 +38,6 @@ public class Dog : MonoBehaviour
         if (isWin) Destroy(_handPos.GetChild(0).gameObject);
 
         _anim.Play("Idle");
-        _spawner.Spawn();
+        GameManager.instance.EnemyCheck();
     }
 }
