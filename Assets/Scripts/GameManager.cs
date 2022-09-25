@@ -11,10 +11,11 @@ public class GameManager : MonoBehaviour
     public float score;
 
     int totalCount = 10;
-    int targetCount = 5;
+    int targetCount = 6;
     int count = 0;
     [HideInInspector] public int index = 0;
     [HideInInspector] public int round = 1;
+    int level = 1;
 
     Gun gun;
 
@@ -98,11 +99,14 @@ public class GameManager : MonoBehaviour
 
         Invoke("RoundStart", 2f);
         UserInterface.instance.Invoke("OnCloseNotification", 2f);
+
+        if (round > (10 * level)) targetCount++; level++;
     }
 
     public void Perfect()
     {
         score += 10000;
+        UserInterface.instance.OnScore();
 
         UserInterface.instance.OnNotification("PERFECT \n 10000");
         Invoke("NextRound", 2.5f);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 
 public class Gun : MonoBehaviour
 {
@@ -11,6 +12,16 @@ public class Gun : MonoBehaviour
     public int ammo;
 
     [HideInInspector] public bool isHit;
+
+    [SerializeField] private GameObject _effect;
+    private PostProcessVolume _postProcess;
+    ColorGrading _colorGrading;
+
+    private void Start()
+    {
+        _postProcess = FindObjectOfType<PostProcessVolume>();
+        _postProcess.profile.TryGetSettings(out _colorGrading);
+    }
 
     void Update()
     {
@@ -50,23 +61,23 @@ public class Gun : MonoBehaviour
             Enemy enemy = hit.transform.GetComponent<Enemy>();
             if (enemy != null)
             {
-                StartCoroutine(ShootEffect(true));
+                StartCoroutine(ShootEffect());
+                Instantiate(_effect, enemy.transform.position, Quaternion.identity);
                 isHit = true;
                 enemy.TakeDamage();
-            }
-            else
-            {
-                StartCoroutine(ShootEffect(false));
             }
            
         }
         ammo--;
         UserInterface.instance.OnShoot();
+        StartCoroutine(ShootEffect());
     }
 
-    IEnumerator ShootEffect(bool isTrigger)
+    IEnumerator ShootEffect()
     {
-        yield return null;
+        _colorGrading.active = true;
+        yield return new WaitForSeconds(0.1f);
+        _colorGrading.active = false;
     }
 
     private void OnDrawGizmosSelected()

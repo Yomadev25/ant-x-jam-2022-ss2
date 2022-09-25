@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     IEnumerator Start()
     {
         _dog = FindObjectOfType<Dog>();
+        _speed += 0.1f * GameManager.instance.round;
 
         for (int i = 0; i < _count; i++)
         {
