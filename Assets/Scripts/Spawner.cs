@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float _minX;
     [SerializeField] private float _minY;
 
-    void Awake()
+    void Start()
     {
         GameManager.instance.onNextWave += Spawn;
     }
