@@ -26,6 +26,7 @@ public class Dog : MonoBehaviour
         else
         {
             _anim.Play("Fail");
+            UserInterface.instance.OnNotification("Fly Away");
         }
 
         this.transform.LeanMoveLocalY(0.4f, _speed).setDelay(0.2f).setOnComplete(()
@@ -38,6 +39,8 @@ public class Dog : MonoBehaviour
         if (isWin) Destroy(_handPos.GetChild(0).gameObject);
 
         _anim.Play("Idle");
+        UserInterface.instance.OnCloseNotification();
         GameManager.instance.EnemyCheck();
+        
     }
 }

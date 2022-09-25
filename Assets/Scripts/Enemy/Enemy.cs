@@ -49,7 +49,7 @@ public class Enemy : MonoBehaviour
 
             if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
             {
-                _dog.DogTrigger(false, this.transform.GetChild(0).gameObject, 0f);
+                _dog.DogTrigger(false, this.transform.GetChild(0).gameObject, 0f);               
                 Destroy(this.gameObject);
             }
             yield return null;

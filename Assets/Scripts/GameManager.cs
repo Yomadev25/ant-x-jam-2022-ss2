@@ -73,7 +73,14 @@ public class GameManager : MonoBehaviour
     {
         if (count >= targetCount)
         {
-            NextRound();
+            if (count >= 10)
+            {
+                Perfect();
+            }
+            else
+            {
+                NextRound();
+            }
         }
         else
         {
@@ -87,13 +94,24 @@ public class GameManager : MonoBehaviour
         count = 0;
         round++;
         UserInterface.instance.OnNextRound();
+        UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
 
-        RoundStart();
+        Invoke("RoundStart", 2f);
+        UserInterface.instance.Invoke("OnCloseNotification", 2f);
+    }
+
+    public void Perfect()
+    {
+        score += 10000;
+
+        UserInterface.instance.OnNotification("PERFECT \n 10000");
+        Invoke("NextRound", 2.5f);
+        UserInterface.instance.Invoke("OnCloseNotification", 2f);
     }
 
     public void Gameover()
     {
-        Debug.Log("GAME OVER");
+        UserInterface.instance.OnNotification("GAME OVER");
     }
     #endregion
 }
