@@ -9,7 +9,8 @@ public class UserInterface : MonoBehaviour
     public static UserInterface instance;
 
     [Header("USER INTERFACE")]
-    [SerializeField] private TMP_Text _ammoText;
+    [SerializeField] private Image[] _ammoIcon;
+    [SerializeField] private Transform _ammoPanel;
     [SerializeField] private TMP_Text _scoreText;
     [SerializeField] private Image[] _enemyCount;
     [SerializeField] private TMP_Text _roundText;
@@ -55,19 +56,25 @@ public class UserInterface : MonoBehaviour
         for (int i = 0; i < _enemyCount.Length; i++)
         {
             _enemyCount[i].transform.localScale = Vector3.one;
-            _enemyCount[i].color = Color.red;
+            _enemyCount[i].color = Color.white;
         }
     }
 
     public void OnShoot()
     {
-        _ammoText.text = gun.ammo.ToString() + " / 3";
+        for (int i = 0; i < _ammoIcon.Length; i++)
+        {
+            if (i < gun.ammo)
+                _ammoIcon[i].enabled = true;
+            else
+                _ammoIcon[i].enabled = false;
+        }
     }
 
     public void OnScore()
     {
         _scoreText.text = GameManager.instance.score.ToString();
-        _enemyCount[GameManager.instance.index].color = Color.green;
+        _enemyCount[GameManager.instance.index].color = Color.red;
     }
 
     public void OnNotification(string _text)
