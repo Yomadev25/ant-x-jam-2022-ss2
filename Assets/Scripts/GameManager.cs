@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     #region ROUND MANAGER
     public void RoundStart()
     {
-        NextWave();
+        Invoke("NextWave", 0.5f);
     }
 
     public void EnemyCheck()
@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            NextWave();
+            Invoke("NextWave", 0.5f);
         }
     }
 

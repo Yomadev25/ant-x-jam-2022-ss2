@@ -8,7 +8,7 @@ public class Spawner : MonoBehaviour
 
     [Header("SPAWN AREA")]
     [SerializeField] private float _minX;
-    [SerializeField] private float _minY;
+    [SerializeField] private float _maxX;
 
     void Start()
     {
@@ -17,6 +17,6 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        Instantiate(_enemyPrefab, new Vector2(Random.Range(_minX, _minY), 0f), Quaternion.identity);
+        Instantiate(_enemyPrefab, new Vector2(Random.Range(_minX, _maxX), 0f), Quaternion.identity);
     }
 }
