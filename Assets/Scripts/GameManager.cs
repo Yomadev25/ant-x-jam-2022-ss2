@@ -72,10 +72,12 @@ public class GameManager : MonoBehaviour
 
     public void RoundEnd()
     {
+        index = 9;
+
         if (count >= targetCount)
         {
             if (count >= 10)
-            {
+            {               
                 Perfect();
             }
             else

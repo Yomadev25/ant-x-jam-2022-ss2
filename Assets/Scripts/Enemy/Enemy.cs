@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
     {
         GameManager.instance.GetScore(_score);
 
-        transform.eulerAngles = Vector3.zero;
+        transform.eulerAngles = new Vector3(-90f, 180f, 0f);
         yield return new WaitForSeconds(0.5f);
 
         Vector3 endPoint = new Vector3(this.transform.position.x, 0f, 0f);
