@@ -8,12 +8,14 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int _count;
     [SerializeField] private float _score;
     [SerializeField] private List<Vector3> waypoint = new List<Vector3>();
+    [SerializeField] private Animator _anim;
 
     [Header("FLY AREA")]
     [SerializeField] private float _minX;
     [SerializeField] private float _maxX;
     [SerializeField] private float _minY;
     [SerializeField] private float _maxY;
+
 
     Dog _dog;
     bool isDie;
@@ -69,6 +71,7 @@ public class Enemy : MonoBehaviour
         GameManager.instance.GetScore(_score);
 
         transform.eulerAngles = new Vector3(-90f, 180f, 0f);
+        _anim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
 
         Vector3 endPoint = new Vector3(this.transform.position.x, 0f, 0f);
