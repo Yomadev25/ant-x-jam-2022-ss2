@@ -27,6 +27,7 @@ public class Dog : MonoBehaviour
         {
             _anim.Play("Fail");
             UserInterface.instance.OnNotification("Fly Away");
+            UserInterface.instance.OnFlyAway();
         }
 
         this.transform.LeanMoveLocalY(0.4f, _speed).setDelay(0.2f).setOnComplete(()

@@ -10,9 +10,11 @@ public class UserInterface : MonoBehaviour
 
     [Header("USER INTERFACE")]
     [SerializeField] private Image[] _ammoIcon;
-    [SerializeField] private Transform _ammoPanel;
+    [SerializeField] private Sprite[] _ammoSprite;
     [SerializeField] private TMP_Text _scoreText;
     [SerializeField] private Image[] _enemyCount;
+    [SerializeField] private Sprite[] _enemySprite;
+    [SerializeField] private Slider _recentEnemy;
     [SerializeField] private TMP_Text _roundText;
     [SerializeField] private GameObject _notificationBox;
     [SerializeField] private TMP_Text _notificationText;
@@ -45,18 +47,18 @@ public class UserInterface : MonoBehaviour
         {
             _enemyCount[i].transform.localScale = Vector3.one;
         }
-
-        _enemyCount[GameManager.instance.index].transform.localScale = new Vector3(0.7f, 0.7f, 1f);
+       
+        _enemyCount[GameManager.instance.index].sprite = _enemySprite[1];
+        _recentEnemy.value = GameManager.instance.index + 1;
     }
 
     public void OnNextRound()
     {
-        _roundText.text = "Round " + GameManager.instance.round;
+        _roundText.text = "R : " + GameManager.instance.round;
 
         for (int i = 0; i < _enemyCount.Length; i++)
         {
-            _enemyCount[i].transform.localScale = Vector3.one;
-            _enemyCount[i].color = Color.white;
+            _enemyCount[i].sprite = _enemySprite[0];
         }
     }
 
@@ -65,17 +67,19 @@ public class UserInterface : MonoBehaviour
         for (int i = 0; i < _ammoIcon.Length; i++)
         {
             if (i < gun.ammo)
-                _ammoIcon[i].enabled = true;
+                _ammoIcon[i].sprite = _ammoSprite[1];
             else
-                _ammoIcon[i].enabled = false;
+                _ammoIcon[i].sprite = _ammoSprite[0];
         }
     }
 
     public void OnScore()
     {
         _scoreText.text = GameManager.instance.score.ToString();
-        _enemyCount[GameManager.instance.index].color = Color.red;
+        _enemyCount[GameManager.instance.index].sprite = _enemySprite[3];
     }
+
+    public void OnFlyAway() => _enemyCount[GameManager.instance.index].sprite = _enemySprite[2];
 
     public void OnNotification(string _text)
     {
