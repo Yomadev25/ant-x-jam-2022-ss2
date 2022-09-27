@@ -19,7 +19,7 @@ public class Transition : MonoBehaviour
     private void Start()
     {
         LeanTween.scale(fader, Vector3.one, 0);
-        LeanTween.scale(fader, Vector3.zero, 0.8f).setEaseInOutSine();
+        LeanTween.scale(fader, Vector3.zero, 0.8f).setEaseInBack().setDelay(0.3f);
     }   
 
     public void Goto(Action onComplete)
