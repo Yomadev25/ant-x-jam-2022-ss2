@@ -5,10 +5,15 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class Gun : MonoBehaviour
 {
+    public enum n_Player { PLAYER_1, PLAYER_2 }
+    [SerializeField] private n_Player _localPlayer;
+
     [SerializeField] private Transform _gunPos;
     [SerializeField] private Transform _gunMesh;
 
     [SerializeField] private float _xySpeed = 18;
+    float h;
+    float v;
     public int ammo;
 
     [HideInInspector] public bool isHit;
@@ -25,8 +30,16 @@ public class Gun : MonoBehaviour
 
     void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        if (_localPlayer == n_Player.PLAYER_1)
+        {
+            h = Input.GetAxis("Horizontal");
+            v = Input.GetAxis("Vertical");
+        }
+        else
+        {
+            h = Input.GetAxis("Horizontal2");
+            v = Input.GetAxis("Vertical2");
+        }
 
         LocalMove(h, v, _xySpeed);
         ClampPosition();

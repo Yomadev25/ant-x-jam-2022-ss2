@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
     public float score;
 
     int totalCount = 10;
-    int targetCount = 6;
-    int count = 0;
+    [HideInInspector] public int targetCount = 6;
+    [HideInInspector] public int count = 0;
     [HideInInspector] public int index = 0;
     [HideInInspector] public int round = 1;
     int level = 1;
@@ -27,9 +27,14 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
     }
 
-    void Start()
+    IEnumerator Start()
     {
         gun = FindObjectOfType<Gun>();
+
+        yield return new WaitForSeconds(1f);
+        UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
+        yield return new WaitForSeconds(2f);
+        UserInterface.instance.OnCloseNotification();
 
         RoundStart();
     }
@@ -44,7 +49,7 @@ public class GameManager : MonoBehaviour
     #region ROUND MANAGER
     public void RoundStart()
     {
-        Invoke("NextWave", 0.5f);
+        Invoke("NextWave", 1f);
     }
 
     public void EnemyCheck()
@@ -53,7 +58,7 @@ public class GameManager : MonoBehaviour
 
         if (index >= totalCount)
         {
-            RoundEnd();
+            StartCoroutine(RoundEnd());
         }
         else
         {
@@ -70,9 +75,12 @@ public class GameManager : MonoBehaviour
         onNextWave?.Invoke();   
     }
 
-    public void RoundEnd()
+    IEnumerator RoundEnd()
     {
         index = 9;
+        UserInterface.instance.OnRoundEnd();
+
+        yield return new WaitForSeconds(3f);
 
         if (count >= targetCount)
         {
@@ -118,6 +126,7 @@ public class GameManager : MonoBehaviour
     public void Gameover()
     {
         UserInterface.instance.OnNotification("GAME OVER");
+        UserInterface.instance.Invoke("OnResult", 1.5f);
     }
     #endregion
 }

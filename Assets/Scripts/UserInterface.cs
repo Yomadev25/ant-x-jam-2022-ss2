@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UserInterface : MonoBehaviour
@@ -18,6 +19,12 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private TMP_Text _roundText;
     [SerializeField] private GameObject _notificationBox;
     [SerializeField] private TMP_Text _notificationText;
+    [SerializeField] private Image _targetSlide;
+
+    [Header("RESULT BOARD")]
+    [SerializeField] private GameObject _resultPanel;
+    [SerializeField] private TMP_Text _scoreResult;
+    [SerializeField] private TMP_Text _roundResult;
 
     Gun gun;
 
@@ -29,16 +36,6 @@ public class UserInterface : MonoBehaviour
             Destroy(this.gameObject);
 
         gun = FindObjectOfType<Gun>();
-    }
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
     }
 
     public void OnNextWave()
@@ -60,6 +57,7 @@ public class UserInterface : MonoBehaviour
         {
             _enemyCount[i].sprite = _enemySprite[0];
         }
+        _targetSlide.fillAmount = (float)GameManager.instance.targetCount / 11f;
     }
 
     public void OnShoot()
@@ -92,5 +90,36 @@ public class UserInterface : MonoBehaviour
     public void OnCloseNotification()
     {
         _notificationBox.LeanScale(Vector3.zero, 0.2f).setEaseOutSine();
+    }
+
+    public void OnRoundEnd()
+    {
+        for (int i = 0; i < _enemyCount.Length; i++)
+        {
+            _enemyCount[i].sprite = _enemySprite[2];
+        }
+        for (int i = 0; i < GameManager.instance.count; i++)
+        {
+            if (i < GameManager.instance.count)
+                _enemyCount[i].sprite = _enemySprite[3];
+        }
+    }
+
+    public void OnResult()
+    {
+        _scoreResult.text = GameManager.instance.score.ToString();
+        _roundResult.text = GameManager.instance.round.ToString();
+
+        _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseInBack();
+    }
+
+    public void OnRestart()
+    {
+        Transition.instance.Goto(() => SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex));
+    }
+
+    public void OnMenu()
+    {
+        Transition.instance.Goto(() => SceneManager.LoadScene("Mainmenu"));
     }
 }
