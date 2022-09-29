@@ -10,11 +10,12 @@ namespace Multiplayer.Local
         public static Multiplayer.Local.GameManager instance;
 
         public event Action onRoundStart, onNextWave, onRoundEnd, onNextRound, onGameover;
-        public float score;
+
+        public float score1;
+        public float score2;
 
         int totalCount = 10;
         int targetCount = 6;
-        int count = 0;
         [HideInInspector] public int index = 0;
         [HideInInspector] public int round = 1;
         int level = 1;
@@ -41,10 +42,11 @@ namespace Multiplayer.Local
             RoundStart();
         }
 
-        public void GetScore(float _score)
+        public void GetScore(int _player, float _score)
         {
-            score += _score;
-            count++;
+            if (_player == 1) score1 += _score;
+            else score2 += _score;
+
             UserInterface.instance.OnScore();
         }
 
@@ -81,16 +83,9 @@ namespace Multiplayer.Local
         {
             index = 9;
 
-            if (count >= targetCount)
+            if (round < 10)
             {
-                if (count >= 10)
-                {
-                    Perfect();
-                }
-                else
-                {
-                    NextRound();
-                }
+                NextRound();
             }
             else
             {
@@ -101,7 +96,6 @@ namespace Multiplayer.Local
         public void NextRound()
         {
             index = 0;
-            count = 0;
             round++;
             UserInterface.instance.OnNextRound();
             UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
@@ -110,16 +104,6 @@ namespace Multiplayer.Local
             UserInterface.instance.Invoke("OnCloseNotification", 2f);
 
             if (round > (10 * level)) targetCount++; level++;
-        }
-
-        public void Perfect()
-        {
-            score += 10000;
-            UserInterface.instance.OnScore();
-
-            UserInterface.instance.OnNotification("PERFECT \n 10000");
-            Invoke("NextRound", 2.5f);
-            UserInterface.instance.Invoke("OnCloseNotification", 2f);
         }
 
         public void Gameover()
