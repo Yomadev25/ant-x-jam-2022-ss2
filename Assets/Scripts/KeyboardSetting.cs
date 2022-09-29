@@ -9,6 +9,12 @@ public class KeyboardSetting : MonoBehaviour
     public static KeyCode p1Key = KeyCode.G;
     public static KeyCode p2Key = KeyCode.M;
 
+    KeyCode p1Default = KeyCode.G;
+    KeyCode p2Default = KeyCode.M;
+
+    KeyCode p1Apply;
+    KeyCode p2Apply;
+
     bool isChanging;
     int index;
 
@@ -39,8 +45,8 @@ public class KeyboardSetting : MonoBehaviour
             {
                 if (vkey != KeyCode.Return)
                 {
-                    if (index == 1) p1Key = vkey;
-                    else p2Key = vkey;             
+                    if (index == 1) p1Apply = vkey;
+                    else p2Apply = vkey;             
                     isChanging = false;
                     ConfirmKey();
                 }
@@ -57,30 +63,61 @@ public class KeyboardSetting : MonoBehaviour
         {
             _p1Button.interactable = false;
             _p1KeyText.text = "Detecting..";
+            _p1KeyText.fontSize = 34f;
         }
         else
         {
             _p2Button.interactable = false;
             _p2KeyText.text = "Detecting..";
+            _p2KeyText.fontSize = 34f;
         }
     }
 
     public void ConfirmKey()
     {
+        if (p1Apply == KeyCode.None) p1Apply = p1Default;
+        if (p2Apply == KeyCode.None) p2Apply = p2Default;
+
         if (index == 1)
         {
             _p1Button.interactable = true;
-            _p1KeyText.text = p1Key.ToString();
+            _p1KeyText.text = p1Apply.ToString();
+            _p1KeyText.fontSize = 49f;
         }
         else
         {
             _p2Button.interactable = true;
-            _p2KeyText.text = p2Key.ToString();
+            _p2KeyText.text = p2Apply.ToString();
+            _p2KeyText.fontSize = 49f;
         }
+    }
+
+    public void Default(int _player)
+    {
+        if(_player == 1) p1Key = p1Default;
+        else p2Key = p2Default;
+
+        _p1KeyText.text = p1Key.ToString();
+        _p2KeyText.text = p2Key.ToString();
+    }
+
+    public void Apply()
+    {
+        if (p1Apply == KeyCode.None) p1Apply = p1Default;
+        if (p2Apply == KeyCode.None) p2Apply = p2Default;
+
+        p1Key = p1Apply;
+        p2Key = p2Apply;
     }
 
     public void Close()
     {
         this.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        _p1KeyText.text = p1Key.ToString();
+        _p2KeyText.text = p2Key.ToString();
     }
 }
