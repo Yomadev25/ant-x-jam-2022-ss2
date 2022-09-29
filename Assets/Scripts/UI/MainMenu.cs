@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _modePanel;
+    [SerializeField] private GameObject _keyboardSettingPanel;
 
     private void Start()
     {
@@ -22,6 +23,11 @@ public class MainMenu : MonoBehaviour
     public void Exit()
     {
         Application.Quit();
+    }
+
+    public void KeySetting()
+    {
+        _keyboardSettingPanel.SetActive(true);
     }
 
     public void BackToMenu()

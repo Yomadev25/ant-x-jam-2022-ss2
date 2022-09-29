@@ -34,13 +34,13 @@ namespace Multiplayer.Local
             {
                 horizontalKey = "Horizontal";
                 verticalKey = "Vertical";
-                fireKey = KeyCode.G;
+                fireKey = KeyboardSetting.p1Key;
             }
             else
             {
                 horizontalKey = "Horizontal2";
                 verticalKey = "Vertical2";
-                fireKey = KeyCode.M;
+                fireKey = KeyboardSetting.p2Key;
             }
         }
 

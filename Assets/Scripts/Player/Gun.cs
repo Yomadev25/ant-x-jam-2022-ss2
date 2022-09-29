@@ -11,6 +11,7 @@ public class Gun : MonoBehaviour
     [SerializeField] private float _xySpeed = 18;
     float h;
     float v;
+    KeyCode fireKey;
     public int ammo;
 
     [HideInInspector] public bool isHit;
@@ -23,6 +24,8 @@ public class Gun : MonoBehaviour
     {
         _postProcess = FindObjectOfType<PostProcessVolume>();
         _postProcess.profile.TryGetSettings(out _colorGrading);
+
+        fireKey = KeyboardSetting.p1Key;
     }
 
     void Update()
@@ -34,7 +37,7 @@ public class Gun : MonoBehaviour
         ClampPosition();
         _gunMesh.LookAt(this.transform.position);
 
-        if (Input.GetKeyDown(KeyCode.G) && ammo > 0 && !isHit)
+        if (Input.GetKeyDown(fireKey) && ammo > 0 && !isHit)
         {
             Shoot();
         }
