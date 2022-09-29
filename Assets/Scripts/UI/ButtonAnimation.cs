@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField] private bool isShake;
+
     public void OnPointerEnter(PointerEventData eventData)
     {
         this.transform.LeanScale(new Vector3(1.1f, 1.1f, 1.1f), 0.1f).setEaseInSine();
