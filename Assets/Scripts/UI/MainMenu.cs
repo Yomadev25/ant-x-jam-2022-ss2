@@ -32,6 +32,6 @@ public class MainMenu : MonoBehaviour
 
     public void OnModeSelect(int index)
     {
-        Transition.instance.Goto(() => SceneManager.LoadScene("Prototype"));
+        Transition.instance.Goto(() => SceneManager.LoadScene(index == 0? "SingleMode" : "Local"));
     }
 }

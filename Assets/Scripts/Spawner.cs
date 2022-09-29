@@ -10,9 +10,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float _minX;
     [SerializeField] private float _maxX;
 
+    [Space] [SerializeField] private bool isMultiplayer;
+
     void Start()
     {
-        GameManager.instance.onNextWave += Spawn;
+        if (!isMultiplayer) GameManager.instance.onNextWave += Spawn;
+        else Multiplayer.Local.GameManager.instance.onNextWave += Spawn;
     }
 
     public void Spawn()

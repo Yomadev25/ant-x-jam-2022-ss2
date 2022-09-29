@@ -15,12 +15,12 @@ namespace Multiplayer.Local
         public float score2;
 
         int totalCount = 10;
-        int targetCount = 6;
         [HideInInspector] public int index = 0;
         [HideInInspector] public int round = 1;
-        int level = 1;
+        [HideInInspector] public int enemyCount;
 
-        Gun gun;
+        [SerializeField] private Gun gun1;
+        [SerializeField] private Gun gun2;
 
         private void Awake()
         {
@@ -32,8 +32,6 @@ namespace Multiplayer.Local
 
         IEnumerator Start()
         {
-            gun = FindObjectOfType<Gun>();
-
             yield return new WaitForSeconds(1f);
             UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
             yield return new WaitForSeconds(2f);
@@ -42,12 +40,12 @@ namespace Multiplayer.Local
             RoundStart();
         }
 
-        public void GetScore(int _player, float _score)
+        public void GetScore(int _player, int _enemy, float _score)
         {
             if (_player == 1) score1 += _score;
             else score2 += _score;
 
-            UserInterface.instance.OnScore();
+            UserInterface.instance.OnScore(_player, _enemy);
         }
 
         #region ROUND MANAGER
@@ -58,11 +56,12 @@ namespace Multiplayer.Local
 
         public void EnemyCheck()
         {
-            index++;
+            enemyCount--;
+            if (!(enemyCount <= 0)) return;
 
             if (index >= totalCount)
             {
-                RoundEnd();
+                Invoke(nameof(RoundEnd), 0.5f);
             }
             else
             {
@@ -72,17 +71,25 @@ namespace Multiplayer.Local
 
         public void NextWave()
         {
-            gun.ammo = 3;
-            gun.isHit = false;
-            UserInterface.instance.OnShoot();
-            UserInterface.instance.OnNextWave();
-            onNextWave?.Invoke();
+            gun1.ammo = 3;
+            gun2.ammo = 3;
+
+            UserInterface.instance.OnShoot();           
+
+            int count = UnityEngine.Random.Range(1, 5);
+            enemyCount = 0;
+            for (int i = 0; i < count; i++)
+            {               
+                if (index >= totalCount) break;
+                enemyCount++;
+                index++;
+                onNextWave?.Invoke();
+                UserInterface.instance.OnNextWave();
+            }
         }
 
         public void RoundEnd()
         {
-            index = 9;
-
             if (round < 10)
             {
                 NextRound();
@@ -102,13 +109,12 @@ namespace Multiplayer.Local
 
             Invoke("RoundStart", 2f);
             UserInterface.instance.Invoke("OnCloseNotification", 2f);
-
-            if (round > (10 * level)) targetCount++; level++;
         }
 
         public void Gameover()
         {
-            UserInterface.instance.OnNotification("GAME OVER");            
+            UserInterface.instance.OnNotification("GAME OVER");
+            UserInterface.instance.Invoke("OnResult", 1.5f);
         }
         #endregion
     }

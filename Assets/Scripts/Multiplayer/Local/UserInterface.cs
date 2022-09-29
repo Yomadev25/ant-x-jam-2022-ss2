@@ -25,8 +25,14 @@ namespace Multiplayer.Local
 
         [Header("RESULT BOARD")]
         [SerializeField] private GameObject _resultPanel;
-        [SerializeField] private TMP_Text _scoreResult;
-        [SerializeField] private TMP_Text _roundResult;
+        [SerializeField] private Image _winIcon;
+        [SerializeField] private Sprite[] _winSprite;
+        [SerializeField] private TMP_Text _scoreResult1;
+        [SerializeField] private TMP_Text _scoreResult2;
+        [SerializeField] private TMP_Text _winResult;
+        [SerializeField] private TMP_FontAsset _p1Font;
+        [SerializeField] private TMP_FontAsset _p2Font;
+        [SerializeField] private TMP_FontAsset _drawFont;
 
         [SerializeField] Gun gun1;
         [SerializeField] Gun gun2;
@@ -41,17 +47,17 @@ namespace Multiplayer.Local
 
         public void OnNextWave()
         {
-            //_enemyCount[GameManager.instance.index].sprite = _enemySprite[1];
+            _enemyCount[GameManager.instance.index - 1].sprite = _enemySprite[3];
         }
 
         public void OnNextRound()
         {
             _roundText.text = "R : " + GameManager.instance.round + "/10";
 
-            /*for (int i = 0; i < _enemyCount.Length; i++)
+            for (int i = 0; i < _enemyCount.Length; i++)
             {
                 _enemyCount[i].sprite = _enemySprite[0];
-            }*/
+            }
         }
 
         public void OnShoot()
@@ -73,15 +79,15 @@ namespace Multiplayer.Local
             }
         }
 
-        public void OnScore()
+        public void OnScore(int _player, int index)
         {
             _scoreText1.text = GameManager.instance.score1.ToString();
             _scoreText2.text = GameManager.instance.score2.ToString();
 
-            //_enemyCount[GameManager.instance.index].sprite = _enemySprite[3];
+            _enemyCount[index - 1].sprite = _enemySprite[_player];
         }
 
-        //public void OnFlyAway() => _enemyCount[GameManager.instance.index].sprite = _enemySprite[2];
+        public void OnFlyAway(int index) => _enemyCount[index - 1].sprite = _enemySprite[4];
 
         public void OnNotification(string _text)
         {
@@ -111,10 +117,29 @@ namespace Multiplayer.Local
 
         public void OnResult()
         {
-            /*_scoreResult.text = GameManager.instance.score.ToString();
-            _roundResult.text = GameManager.instance.round.ToString();
+            _scoreResult1.text = GameManager.instance.score1.ToString();
+            _scoreResult2.text = GameManager.instance.score2.ToString();
+            
+            if (GameManager.instance.score1 == GameManager.instance.score2)
+            {
+                _winResult.text = "DRAW";
+                _winResult.font = _drawFont;
+                _winIcon.sprite = _winSprite[0];
+            }
+            else if (GameManager.instance.score1 > GameManager.instance.score2)
+            {
+                _winResult.text = "PLAYER 1 WIN";
+                _winResult.font = _p1Font;
+                _winIcon.sprite = _winSprite[1];
+            }
+            else
+            {
+                _winResult.text = "PLAYER 2 WIN";
+                _winResult.font = _p2Font;
+                _winIcon.sprite = _winSprite[2];
+            }
 
-            _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseInBack();*/
+            _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseInBack();
         }
 
         public void OnRestart()

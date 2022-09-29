@@ -21,8 +21,6 @@ namespace Multiplayer.Local
         float v;
         public int ammo;
 
-        [HideInInspector] public bool isHit;
-
         [SerializeField] private GameObject _effect;
         private PostProcessVolume _postProcess;
         ColorGrading _colorGrading;
@@ -55,7 +53,7 @@ namespace Multiplayer.Local
             ClampPosition();
             _gunMesh.LookAt(this.transform.position);
 
-            if (Input.GetKeyDown(fireKey) && ammo > 0 && !isHit)
+            if (Input.GetKeyDown(fireKey) && ammo > 0)
             {
                 Shoot();
             }
@@ -86,10 +84,8 @@ namespace Multiplayer.Local
                 {
                     StartCoroutine(ShootEffect());
                     Instantiate(_effect, enemy.transform.position, Quaternion.identity);
-                    isHit = true;
-                    enemy.TakeDamage();
+                    enemy.TakeDamage(nPlayer == n_Player.PLAYER_1? 1 : 2);
                 }
-
             }
             ammo--;
             UserInterface.instance.OnShoot();

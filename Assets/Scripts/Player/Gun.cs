@@ -34,7 +34,7 @@ public class Gun : MonoBehaviour
         ClampPosition();
         _gunMesh.LookAt(this.transform.position);
 
-        if (Input.GetButtonDown("Fire1") && ammo > 0 && !isHit)
+        if (Input.GetKeyDown(KeyCode.G) && ammo > 0 && !isHit)
         {
             Shoot();
         }
