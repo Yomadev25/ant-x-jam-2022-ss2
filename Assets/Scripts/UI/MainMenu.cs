@@ -8,11 +8,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject _menuPanel;
     [SerializeField] private GameObject _modePanel;
     [SerializeField] private GameObject _keyboardSettingPanel;
-
-    private void Start()
-    {
-        Debug.Log(-Screen.width);
-    }
+    [SerializeField] private GameObject _multiplayerPanel;
+    [SerializeField] private GameObject _onlinePanel;
 
     public void Play()
     {
@@ -38,6 +35,18 @@ public class MainMenu : MonoBehaviour
 
     public void OnModeSelect(int index)
     {
-        Transition.instance.Goto(() => SceneManager.LoadScene(index == 0? "SingleMode" : "Local"));
+        if (index < 2)
+        {
+            Transition.instance.Goto(() => SceneManager.LoadScene(index == 0 ? "SingleMode" : "Local"));
+        }
+        else
+        {
+            _multiplayerPanel.SetActive(true);
+        }
+    }
+
+    public void OnOnline()
+    {
+        _onlinePanel.SetActive(true);
     }
 }
