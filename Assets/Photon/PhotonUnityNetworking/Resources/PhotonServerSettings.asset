@@ -41,6 +41,14 @@ MonoBehaviour:
   - RespawnSpaceship
   - SceneChange
   - Effect
+  - RPCTakeDamage
+  - RPCGetGun
+  - RPCNextWave
+  - RPCGameover
+  - RPCNextRound
+  - RPCGetScore
+  - RPCDie
+  - RPCEnemyCheck
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -38,6 +38,8 @@ namespace Multiplayer.Online
             fireKey = KeyboardSetting.p1Key;
 
             _gunMesh.parent = null;
+
+            _photonView.RPC(nameof(RPCGetGun), RpcTarget.All);
         }
 
         void Update()
@@ -84,7 +86,7 @@ namespace Multiplayer.Online
                 {
                     StartCoroutine(ShootEffect());
                     Instantiate(_effect, enemy.transform.position, Quaternion.identity);
-                    //enemy.TakeDamage(1);
+                    enemy.TakeDamage(PhotonNetwork.IsMasterClient? 1 : 2);
                 }
             }
             ammo--;
@@ -111,6 +113,13 @@ namespace Multiplayer.Online
         public void Effect()
         {
             StartCoroutine(ShootEffect());
+        }
+
+        [PunRPC]
+        public void RPCGetGun()
+        {
+            if (this.gameObject.name == "Player1(Clone)") GameManager.instance.gun1 = this;
+            else GameManager.instance.gun2 = this;
         }
     }
 }

@@ -13,11 +13,11 @@ namespace Multiplayer.Online
         {
             if (PhotonNetwork.IsMasterClient)
             {
-                PhotonNetwork.Instantiate("Player1", spawnPos, Quaternion.identity);
+                GameObject gun = PhotonNetwork.Instantiate("Player1", spawnPos, Quaternion.identity);
             }
             else
             {
-                PhotonNetwork.Instantiate("Player2", spawnPos, Quaternion.identity);
+                GameObject gun = PhotonNetwork.Instantiate("Player2", spawnPos, Quaternion.identity);
             }
         }
     }

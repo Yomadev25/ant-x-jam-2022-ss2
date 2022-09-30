@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace Multiplayer.Online
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviourPun
     {
         [SerializeField] private float _speed;
         [SerializeField] private int _count;
@@ -22,6 +23,8 @@ namespace Multiplayer.Online
         bool isDie;
         [HideInInspector] public int index;
 
+        PhotonView _photonView;
+
         private void Awake()
         {
             index = GameManager.instance.index;
@@ -30,50 +33,48 @@ namespace Multiplayer.Online
 
         IEnumerator Start()
         {
-            _speed += 0.1f * GameManager.instance.round;
+            // _speed += 0.1f * GameManager.instance.round;
+            _photonView = GetComponent<PhotonView>();
 
-            for (int i = 0; i < _count; i++)
+            if (PhotonNetwork.IsMasterClient)
             {
-                waypoint.Add(new Vector3(Random.Range(_minX, _maxX), Random.Range(_minY, _maxY), 0f));
-            }
-
-            int x = 0;
-            while (true)
-            {
-                this.transform.position = Vector3.MoveTowards(this.transform.position, waypoint[x], _speed * Time.deltaTime);
-                this.transform.LookAt(waypoint[x]);
-
-                if (Vector3.Magnitude(this.transform.position - waypoint[x]) <= 0)
+                for (int i = 0; i < _count; i++)
                 {
-                    if (x < _count - 1) x++;
-                    else break;
+                    waypoint.Add(new Vector3(Random.Range(_minX, _maxX), Random.Range(_minY, _maxY), 0f));
                 }
-                yield return null;
-            }
 
-            Vector3 endPoint = new Vector3(this.transform.position.x, 8f, 0f);
-            while (true)
-            {
-                this.transform.position = Vector3.MoveTowards(this.transform.position, endPoint, _speed * Time.deltaTime);
-                this.transform.LookAt(endPoint);
-
-                if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
+                int x = 0;
+                while (true)
                 {
-                    GameManager.instance.EnemyCheck();
-                    //UserInterface.instance.OnFlyAway(index);
-                    Destroy(this.gameObject);
+                    this.transform.position = Vector3.MoveTowards(this.transform.position, waypoint[x], _speed * Time.deltaTime);
+                    this.transform.LookAt(waypoint[x]);
+
+                    if (Vector3.Magnitude(this.transform.position - waypoint[x]) <= 0)
+                    {
+                        if (x < _count - 1) x++;
+                        else break;
+                    }
+                    yield return null;
                 }
-                yield return null;
+
+                Vector3 endPoint = new Vector3(this.transform.position.x, 8f, 0f);
+                while (true)
+                {
+                    this.transform.position = Vector3.MoveTowards(this.transform.position, endPoint, _speed * Time.deltaTime);
+                    this.transform.LookAt(endPoint);
+
+                    if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
+                    {
+                        _photonView.RPC(nameof(RPCDie), RpcTarget.All);
+                    }
+                    yield return null;
+                }
             }
         }
 
         public void TakeDamage(int _player)
         {
-            if (isDie) return;
-            isDie = true;
-            //GameManager.instance.GetScore(_player, index, _score);
-            StopAllCoroutines();
-            StartCoroutine(Die());
+            _photonView.RPC(nameof(RPCTakeDamage), RpcTarget.All, _player);
         }
 
         IEnumerator Die()
@@ -95,6 +96,24 @@ namespace Multiplayer.Online
                 }
                 yield return null;
             }
+        }
+
+        [PunRPC]
+        public void RPCTakeDamage(int _player)
+        {
+            if (isDie) return;
+            isDie = true;
+            GameManager.instance.GetScore(_player, index, _score);
+            StopAllCoroutines();
+            StartCoroutine(Die());
+        }
+
+        [PunRPC]
+        public void RPCDie()
+        {
+            GameManager.instance.EnemyCheck();
+            //UserInterface.instance.OnFlyAway(index);
+            Destroy(this.gameObject);
         }
     }
 }

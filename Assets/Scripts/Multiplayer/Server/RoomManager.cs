@@ -23,14 +23,14 @@ namespace Multiplayer.Online
 
         private void Update()
         {
-            if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
+            /*if (PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.PlayerCount >= 2)
             {
                 _playButton.SetActive(true);
             }
             else
             {
                 _playButton.SetActive(false);
-            }
+            }*/
         }
 
         public void LeaveRoom()
