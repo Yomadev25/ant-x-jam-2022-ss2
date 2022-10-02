@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     {
         gun = FindObjectOfType<Gun>();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
         yield return new WaitForSeconds(2f);
         UserInterface.instance.OnCloseNotification();
