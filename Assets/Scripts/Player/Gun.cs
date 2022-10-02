@@ -17,6 +17,7 @@ public class Gun : MonoBehaviour
     [HideInInspector] public bool isHit;
 
     [SerializeField] private GameObject _effect;
+    [SerializeField] private GameObject _muzzle;
     private PostProcessVolume _postProcess;
     ColorGrading _colorGrading;
 
@@ -90,7 +91,9 @@ public class Gun : MonoBehaviour
     IEnumerator ShootEffect()
     {
         _colorGrading.active = true;
+        _muzzle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
+        _muzzle.SetActive(false);
         _colorGrading.active = false;
     }
 

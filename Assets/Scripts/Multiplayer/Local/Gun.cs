@@ -22,6 +22,7 @@ namespace Multiplayer.Local
         public int ammo;
 
         [SerializeField] private GameObject _effect;
+        [SerializeField] private GameObject _muzzle;
         private PostProcessVolume _postProcess;
         ColorGrading _colorGrading;
 
@@ -104,7 +105,9 @@ namespace Multiplayer.Local
         IEnumerator ShootEffect()
         {
             _colorGrading.active = true;
+            _muzzle.SetActive(true);
             yield return new WaitForSeconds(0.1f);
+            _muzzle.SetActive(false);
             _colorGrading.active = false;
         }
 
