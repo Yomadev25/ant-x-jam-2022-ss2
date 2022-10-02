@@ -26,6 +26,10 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private TMP_Text _scoreResult;
     [SerializeField] private TMP_Text _roundResult;
 
+    [Header("SOUND EFFECT")]
+    [SerializeField] private AudioSource _notificationSound;
+    [SerializeField] private AudioSource _completeSound;
+
     Gun gun;
 
     void Awake()
@@ -83,6 +87,7 @@ public class UserInterface : MonoBehaviour
     {
         _notificationText.text = _text;
 
+        _notificationSound.Play();
         _notificationBox.transform.localScale = Vector3.zero;
         _notificationBox.LeanScale(Vector3.one, 0.2f).setEaseInSine();
     }
@@ -110,7 +115,8 @@ public class UserInterface : MonoBehaviour
         _scoreResult.text = GameManager.instance.score.ToString();
         _roundResult.text = GameManager.instance.round.ToString();
 
-        _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseInBack();
+        _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseOutQuart();
+        _completeSound.Play();
     }
 
     public void OnRestart()

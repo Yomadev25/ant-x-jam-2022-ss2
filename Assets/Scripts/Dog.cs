@@ -9,6 +9,10 @@ public class Dog : MonoBehaviour
     [SerializeField] private Transform _handPos;
     Spawner _spawner;
 
+    [Header("SOUND EFFECT")]
+    [SerializeField] private AudioSource _score;
+    [SerializeField] private AudioSource _laugh;
+
     private void Start()
     {
         _spawner = FindObjectOfType<Spawner>();
@@ -22,16 +26,18 @@ public class Dog : MonoBehaviour
         {
             _anim.Play("Win");
             Instantiate(Obj, _handPos);
+            _score.Play();
         }
         else
         {
             _anim.Play("Fail");
             UserInterface.instance.OnNotification("Fly Away");
             UserInterface.instance.OnFlyAway();
+            _laugh.Play();
         }
 
         this.transform.LeanMoveLocalY(0.4f, _speed).setDelay(0.2f).setOnComplete(()
-            => this.transform.LeanMoveLocalY(-1.1f, _speed).setDelay(0.2f).setOnComplete(() 
+            => this.transform.LeanMoveLocalY(-1.1f, _speed).setDelay(0.5f).setOnComplete(() 
             => Idle(isWin)));
     }
 
@@ -41,7 +47,6 @@ public class Dog : MonoBehaviour
 
         _anim.Play("Idle");
         UserInterface.instance.OnCloseNotification();
-        GameManager.instance.EnemyCheck();
-        
+        GameManager.instance.EnemyCheck();        
     }
 }

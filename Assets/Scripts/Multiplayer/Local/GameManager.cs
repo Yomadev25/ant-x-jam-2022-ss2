@@ -73,6 +73,7 @@ namespace Multiplayer.Local
         {
             gun1.ammo = 3;
             gun2.ammo = 3;
+            gun1._reloadSound.Play();
 
             UserInterface.instance.OnShoot();           
 

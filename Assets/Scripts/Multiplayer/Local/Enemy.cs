@@ -21,6 +21,7 @@ namespace Multiplayer.Local
 
         bool isDie;
         [HideInInspector] public int index;
+        [HideInInspector] public AudioSource _flySound;
 
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace Multiplayer.Local
         IEnumerator Start()
         {          
             _speed += 0.1f * GameManager.instance.round;
+            _flySound = GetComponent<AudioSource>();
 
             for (int i = 0; i < _count; i++)
             {
@@ -80,6 +82,7 @@ namespace Multiplayer.Local
         {         
             transform.eulerAngles = new Vector3(-90f, 180f, 0f);
             _anim.SetTrigger("Death");
+            _flySound.Stop();
             yield return new WaitForSeconds(0.5f);
 
             Vector3 endPoint = new Vector3(this.transform.position.x, 0f, 0f);

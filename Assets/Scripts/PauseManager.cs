@@ -15,17 +15,27 @@ public class PauseManager : MonoBehaviour
         if (!isMultiplayer)
         {
             Gun[] gun = FindObjectsOfType<Gun>();
+            Enemy[] enemy = FindObjectsOfType<Enemy>();
             for (int i = 0; i < gun.Length; i++)
             {
                 gun[i].enabled = false;
             }
+            for (int i = 0; i < enemy.Length; i++)
+            {
+                enemy[i]._flySound.Stop();
+            }
         }
         else
         {
-            Multiplayer.Local.Gun[] gun = FindObjectsOfType<Multiplayer.Local.Gun>();
+            Multiplayer.Local.Gun[] gun = FindObjectsOfType<Multiplayer.Local.Gun>();          
+            Multiplayer.Local.Enemy[] enemy = FindObjectsOfType<Multiplayer.Local.Enemy>();
             for (int i = 0; i < gun.Length; i++)
             {
                 gun[i].enabled = false;
+            }
+            for (int i = 0; i < enemy.Length; i++)
+            {
+                enemy[i]._flySound.Stop();
             }
         }
     }
@@ -38,17 +48,27 @@ public class PauseManager : MonoBehaviour
         if (!isMultiplayer)
         {
             Gun[] gun = FindObjectsOfType<Gun>();
+            Enemy[] enemy = FindObjectsOfType<Enemy>();
             for (int i = 0; i < gun.Length; i++)
             {
                 gun[i].enabled = true;
+            }
+            for (int i = 0; i < enemy.Length; i++)
+            {
+                enemy[i]._flySound.Play();
             }
         }
         else
         {
             Multiplayer.Local.Gun[] gun = FindObjectsOfType<Multiplayer.Local.Gun>();
+            Multiplayer.Local.Enemy[] enemy = FindObjectsOfType<Multiplayer.Local.Enemy>();
             for (int i = 0; i < gun.Length; i++)
             {
                 gun[i].enabled = true;
+            }
+            for (int i = 0; i < enemy.Length; i++)
+            {
+                enemy[i]._flySound.Play();
             }
         }
     }

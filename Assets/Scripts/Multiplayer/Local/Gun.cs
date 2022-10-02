@@ -25,6 +25,12 @@ namespace Multiplayer.Local
         private PostProcessVolume _postProcess;
         ColorGrading _colorGrading;
 
+        [Header("SOUND EFFECT")]
+        [SerializeField] private AudioSource _shoot;
+        [SerializeField] private AudioSource _duckDie;
+        [SerializeField] private AudioSource _scoreSound;
+        public AudioSource _reloadSound;
+
         private void Start()
         {
             _postProcess = FindObjectOfType<PostProcessVolume>();
@@ -85,9 +91,12 @@ namespace Multiplayer.Local
                     StartCoroutine(ShootEffect());
                     Instantiate(_effect, enemy.transform.position, Quaternion.identity);
                     enemy.TakeDamage(nPlayer == n_Player.PLAYER_1? 1 : 2);
+                    _duckDie.Play();
+                    _scoreSound.Play();
                 }
             }
             ammo--;
+            _shoot.Play();
             UserInterface.instance.OnShoot();
             StartCoroutine(ShootEffect());
         }

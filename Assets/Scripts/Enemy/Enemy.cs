@@ -19,10 +19,12 @@ public class Enemy : MonoBehaviour
 
     Dog _dog;
     bool isDie;
+    [HideInInspector] public AudioSource _flySound;
 
     IEnumerator Start()
     {
         _dog = FindObjectOfType<Dog>();
+        _flySound = GetComponent<AudioSource>();
         _speed += 0.1f * GameManager.instance.round;
 
         for (int i = 0; i < _count; i++)
@@ -71,6 +73,7 @@ public class Enemy : MonoBehaviour
         GameManager.instance.GetScore(_score);
 
         transform.eulerAngles = new Vector3(-90f, 180f, 0f);
+        _flySound.Stop();
         _anim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
 

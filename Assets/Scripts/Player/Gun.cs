@@ -20,6 +20,12 @@ public class Gun : MonoBehaviour
     private PostProcessVolume _postProcess;
     ColorGrading _colorGrading;
 
+    [Header("SOUND EFFECT")]
+    [SerializeField] private AudioSource _shoot;
+    [SerializeField] private AudioSource _duckDie;
+    [SerializeField] private AudioSource _scoreSound;
+    public AudioSource _reloadSound;
+
     private void Start()
     {
         _postProcess = FindObjectOfType<PostProcessVolume>();
@@ -70,10 +76,13 @@ public class Gun : MonoBehaviour
                 Instantiate(_effect, enemy.transform.position, Quaternion.identity);
                 isHit = true;
                 enemy.TakeDamage();
+                _duckDie.Play();
+                _scoreSound.Play();
             }
            
         }
         ammo--;
+        _shoot.Play();
         UserInterface.instance.OnShoot();
         StartCoroutine(ShootEffect());
     }

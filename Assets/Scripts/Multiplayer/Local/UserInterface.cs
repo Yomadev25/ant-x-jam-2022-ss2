@@ -37,6 +37,10 @@ namespace Multiplayer.Local
         [SerializeField] Gun gun1;
         [SerializeField] Gun gun2;
 
+        [Header("SOUND EFFECT")]
+        [SerializeField] private AudioSource _notificationSound;
+        [SerializeField] private AudioSource _completeSound;
+
         void Awake()
         {
             if (instance == null)
@@ -95,6 +99,7 @@ namespace Multiplayer.Local
 
             _notificationBox.transform.localScale = Vector3.zero;
             _notificationBox.LeanScale(Vector3.one, 0.2f).setEaseInSine();
+            _notificationSound.Play();
         }
 
         public void OnCloseNotification()
@@ -139,7 +144,8 @@ namespace Multiplayer.Local
                 _winIcon.sprite = _winSprite[2];
             }
 
-            _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseInBack();
+            _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseOutQuart();
+            _completeSound.Play();
         }
 
         public void OnRestart()

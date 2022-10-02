@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
     {   
         gun.ammo = 3;
         gun.isHit = false;
+        gun._reloadSound.Play();
         UserInterface.instance.OnShoot();
         UserInterface.instance.OnNextWave();
         onNextWave?.Invoke();   
