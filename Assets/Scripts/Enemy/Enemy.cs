@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
     {
         _dog = FindObjectOfType<Dog>();
         _flySound = GetComponent<AudioSource>();
-        _speed += 0.1f * GameManager.instance.round;
+        _speed += 0.2f * GameManager.instance.round;
 
         for (int i = 0; i < _count; i++)
         {
