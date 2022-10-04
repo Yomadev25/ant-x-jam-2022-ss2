@@ -26,6 +26,10 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private TMP_Text _scoreResult;
     [SerializeField] private TMP_Text _roundResult;
 
+    [Header("TUTORIAL")]
+    [SerializeField] private GameObject _playerKeyboard;
+    [SerializeField] private TMP_Text _playerShootButton;
+
     [Header("SOUND EFFECT")]
     [SerializeField] private AudioSource _notificationSound;
     [SerializeField] private AudioSource _completeSound;
@@ -40,6 +44,16 @@ public class UserInterface : MonoBehaviour
             Destroy(this.gameObject);
 
         gun = FindObjectOfType<Gun>();
+    }
+
+    private void Start()
+    {
+        _playerShootButton.text = KeyboardSetting.p1Key.ToString();
+    }
+
+    public void OnTutorialClose()
+    {
+        _playerKeyboard.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
     }
 
     public void OnNextWave()

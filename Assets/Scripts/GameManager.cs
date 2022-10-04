@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
         UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
         yield return new WaitForSeconds(2f);
         UserInterface.instance.OnCloseNotification();
+        UserInterface.instance.OnTutorialClose();
 
         RoundStart();
     }

@@ -34,6 +34,12 @@ namespace Multiplayer.Local
         [SerializeField] private TMP_FontAsset _p2Font;
         [SerializeField] private TMP_FontAsset _drawFont;
 
+        [Header("TUTORIAL")]
+        [SerializeField] private GameObject _player1Tutorial;
+        [SerializeField] private GameObject _player2Tutorial;
+        [SerializeField] private TMP_Text _player1ShootButton;
+        [SerializeField] private TMP_Text _player2ShootButton;
+
         [SerializeField] Gun gun1;
         [SerializeField] Gun gun2;
 
@@ -47,6 +53,18 @@ namespace Multiplayer.Local
                 instance = this;
             else
                 Destroy(this.gameObject);
+        }
+
+        private void Start()
+        {
+            _player1ShootButton.text = KeyboardSetting.p1Key.ToString();
+            _player2ShootButton.text = KeyboardSetting.p2Key.ToString();
+        }
+
+        public void OnTutorialClose()
+        {
+            _player1Tutorial.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
+            _player2Tutorial.LeanScale(Vector3.zero, 0.4f).setEaseInBack();
         }
 
         public void OnNextWave()

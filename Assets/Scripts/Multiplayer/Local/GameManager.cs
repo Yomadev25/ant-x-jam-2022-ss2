@@ -36,8 +36,11 @@ namespace Multiplayer.Local
             UserInterface.instance.OnNotification("ROUND\n" + round.ToString());
             yield return new WaitForSeconds(2f);
             UserInterface.instance.OnCloseNotification();
+            
 
             RoundStart();
+            yield return new WaitForSeconds(2f);
+            UserInterface.instance.OnTutorialClose();
         }
 
         public void GetScore(int _player, int _enemy, float _score)
