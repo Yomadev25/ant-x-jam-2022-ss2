@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 using TMPro;
 
 namespace Multiplayer.Local
@@ -47,6 +48,10 @@ namespace Multiplayer.Local
         [SerializeField] private AudioSource _notificationSound;
         [SerializeField] private AudioSource _completeSound;
 
+        [SerializeField] private CanvasGroup _background;
+        private PostProcessVolume _postProcess;
+        DepthOfField depthOfField;
+
         void Awake()
         {
             if (instance == null)
@@ -59,6 +64,9 @@ namespace Multiplayer.Local
         {
             _player1ShootButton.text = KeyboardSetting.p1Key.ToString();
             _player2ShootButton.text = KeyboardSetting.p2Key.ToString();
+
+            _postProcess = FindObjectOfType<PostProcessVolume>();
+            _postProcess.profile.TryGetSettings(out depthOfField);
         }
 
         public void OnTutorialClose()
@@ -163,6 +171,8 @@ namespace Multiplayer.Local
             }
 
             _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseOutQuart();
+            _background.LeanAlpha(1, 0.7f);
+            depthOfField.active = true;
             _completeSound.Play();
         }
 

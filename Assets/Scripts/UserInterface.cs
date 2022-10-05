@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 using TMPro;
 
 public class UserInterface : MonoBehaviour
@@ -34,7 +35,10 @@ public class UserInterface : MonoBehaviour
     [SerializeField] private AudioSource _notificationSound;
     [SerializeField] private AudioSource _completeSound;
 
+    [SerializeField] private CanvasGroup _background;
     Gun gun;
+    private PostProcessVolume _postProcess;
+    DepthOfField depthOfField;
 
     void Awake()
     {
@@ -49,6 +53,8 @@ public class UserInterface : MonoBehaviour
     private void Start()
     {
         _playerShootButton.text = KeyboardSetting.p1Key.ToString();
+        _postProcess = FindObjectOfType<PostProcessVolume>();
+        _postProcess.profile.TryGetSettings(out depthOfField);
     }
 
     public void OnTutorialClose()
@@ -130,6 +136,8 @@ public class UserInterface : MonoBehaviour
         _roundResult.text = GameManager.instance.round.ToString();
 
         _resultPanel.LeanScale(Vector3.one, 0.7f).setEaseOutQuart();
+        _background.LeanAlpha(1, 0.7f);
+        depthOfField.active = true;
         _completeSound.Play();
     }
 

@@ -2,15 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PauseManager : MonoBehaviour
 {
     [SerializeField] private bool isMultiplayer;
 
+    private PostProcessVolume _postProcess;
+    DepthOfField depthOfField;
+
+    private void Awake()
+    {
+        _postProcess = FindObjectOfType<PostProcessVolume>();
+        _postProcess.profile.TryGetSettings(out depthOfField);
+    }
+
     public void Pause()
     {
         Time.timeScale = 0;
         this.gameObject.SetActive(true);
+        depthOfField.active = true;
 
         if (!isMultiplayer)
         {
@@ -44,6 +55,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1;
         this.gameObject.SetActive(false);
+        depthOfField.active = false;
 
         if (!isMultiplayer)
         {
