@@ -22,6 +22,7 @@ namespace Multiplayer.Local
         bool isDie;
         [HideInInspector] public int index;
         [HideInInspector] public AudioSource _flySound;
+        [SerializeField] private AudioSource _duckSound;
 
         private void Awake()
         {
@@ -33,6 +34,7 @@ namespace Multiplayer.Local
         {          
             _speed += 0.1f * GameManager.instance.round;
             _flySound = GetComponent<AudioSource>();
+            Invoke(nameof(PlaySound), Random.Range(1f, 3f));
 
             for (int i = 0; i < _count; i++)
             {
@@ -69,6 +71,11 @@ namespace Multiplayer.Local
             }
         }
 
+        void PlaySound()
+        {
+            _duckSound.Play();
+        }
+
         public void TakeDamage(int _player)
         {
             if (isDie) return;
@@ -83,6 +90,7 @@ namespace Multiplayer.Local
             transform.eulerAngles = new Vector3(-90f, 180f, 0f);
             _anim.SetTrigger("Death");
             _flySound.Stop();
+            _duckSound.Stop();
             yield return new WaitForSeconds(0.5f);
 
             Vector3 endPoint = new Vector3(this.transform.position.x, 0f, 0f);

@@ -20,6 +20,8 @@ public class Enemy : MonoBehaviour
     Dog _dog;
     bool isDie;
     [HideInInspector] public AudioSource _flySound;
+    [SerializeField] private AudioSource _duckSound;
+    [SerializeField] private GameObject _duckLaugh;
 
     IEnumerator Start()
     {
@@ -54,7 +56,8 @@ public class Enemy : MonoBehaviour
 
             if (Vector3.Magnitude(this.transform.position - endPoint) <= 0)
             {
-                _dog.DogTrigger(false, this.transform.GetChild(0).gameObject, 0f);               
+                _dog.DogTrigger(false, this.transform.GetChild(0).gameObject, 0f);
+                Instantiate(_duckLaugh);
                 Destroy(this.gameObject);
             }
             yield return null;
@@ -74,6 +77,7 @@ public class Enemy : MonoBehaviour
 
         transform.eulerAngles = new Vector3(-90f, 180f, 0f);
         _flySound.Stop();
+        _duckSound.Stop();
         _anim.SetTrigger("Death");
         yield return new WaitForSeconds(0.5f);
 
