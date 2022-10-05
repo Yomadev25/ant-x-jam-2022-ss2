@@ -90,11 +90,11 @@ public class Gun : MonoBehaviour
 
     IEnumerator ShootEffect()
     {
-        _colorGrading.active = true;
+        _colorGrading.contrast.overrideState = true;
         _muzzle.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         _muzzle.SetActive(false);
-        _colorGrading.active = false;
+        _colorGrading.contrast.overrideState = false;
     }
 
     private void OnDrawGizmosSelected()
