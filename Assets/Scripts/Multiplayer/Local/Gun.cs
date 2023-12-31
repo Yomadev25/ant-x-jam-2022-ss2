@@ -55,7 +55,7 @@ namespace Multiplayer.Local
         {
             h = Input.GetAxis(horizontalKey);
             v = Input.GetAxis(verticalKey);
-
+         
             LocalMove(h, v, _xySpeed);
             ClampPosition();
             _gunMesh.LookAt(this.transform.position);
@@ -69,7 +69,7 @@ namespace Multiplayer.Local
         void LocalMove(float x, float y, float speed)
         {
             transform.localPosition += new Vector3(x, y, 0) * speed * Time.deltaTime;
-        }
+        }      
 
         void ClampPosition()
         {

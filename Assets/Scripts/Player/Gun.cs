@@ -40,7 +40,8 @@ public class Gun : MonoBehaviour
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
-        LocalMove(h, v, _xySpeed);
+        MouseMove();
+        //LocalMove(h, v, _xySpeed);
         ClampPosition();
         _gunMesh.LookAt(this.transform.position);
 
@@ -53,6 +54,14 @@ public class Gun : MonoBehaviour
     void LocalMove(float x, float y, float speed)
     {
         transform.localPosition += new Vector3(x, y, 0) * speed * Time.deltaTime;
+    }
+
+    void MouseMove()
+    {
+        var mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = -10f;
+
+        transform.localPosition += new Vector3(mousePos.x, mousePos.y, 0);
     }
 
     void ClampPosition()
